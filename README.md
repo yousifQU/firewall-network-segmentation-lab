@@ -1,6 +1,6 @@
 # IDS/Firewall and Access Control Configuration
 
-> Team lab projects from a university network security course, rewritten as a sanitized portfolio. Please read the [DISCLAIMER](DISCLAIMER.md).
+> **Please read the DISCLAIMER** This work comes from team projects in a university course. I am not the sole author or owner of it, and this repository is a sanitized, re-written summary for educational and portfolio purposes.
 
 ## Executive Summary
 
