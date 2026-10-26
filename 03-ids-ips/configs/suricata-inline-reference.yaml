@@ -1,0 +1,28 @@
+# Suricata inline (IPS) reference: AF_PACKET with copy-mode ips
+# Reference only. NOT part of the lab as executed and NOT tested here.
+# Two NICs are bridged by Suricata: eth1 faces the firewall, eth2 faces the protected host.
+# Neither inline NIC carries an IP address; use a separate management NIC.
+#
+# Before starting, disable NIC offloads on the inline interfaces:
+#   ethtool -K eth1 gro off lro off
+#   ethtool -K eth2 gro off lro off
+
+af-packet:
+  - interface: eth1
+    cluster-id: 98
+    cluster-type: cluster_flow
+    defrag: yes
+    copy-mode: ips
+    copy-iface: eth2
+  - interface: eth2
+    cluster-id: 97
+    cluster-type: cluster_flow
+    defrag: yes
+    copy-mode: ips
+    copy-iface: eth1
+
+# Rules must use the "drop" action to block (alert-only rules just log).
+# Example local rule (lab detection of the vsftpd 2.3.4 backdoor trigger).
+# Start as "alert" to validate, then switch to "drop":
+#
+# drop tcp $EXTERNAL_NET any -> $HOME_NET 21 (msg:"LAB vsftpd 2.3.4 backdoor trigger"; flow:to_server,established; content:"USER "; nocase; content:":)"; distance:0; sid:1000001; rev:1;)
